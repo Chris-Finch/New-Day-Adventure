@@ -19,8 +19,7 @@ const Cards = props => {
             <CardBody className="card-body">
               <CardTitle className="card-title">Iceland</CardTitle>
               <CardText className="card-text">
-                Small on the map and enormous in person, Iceland barely feels
-                like Earth at all. Isolated in the frigid North Atlantic and
+                Isolated in the frigid North Atlantic and
                 forged through centuries of volcanic upheaval and tectonic
                 shifting, Iceland is staggering to look at and otherworldly to
                 explore. The outdoors provide all the action you need: towering

@@ -11,16 +11,59 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 
+const validEmailRegex = RegExp(
+  /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+);
+const validateForm = errors => {
+  let valid = true;
+  Object.values(errors).forEach(val => val.length > 0 && (valid = false));
+  return valid;
+};
+
 class Footer extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      isModalOpen: false
+      isModalOpen: false,
+      formValid: false,
+      errors: {
+        name: '',
+        email: '',
+        destination: '',
+      }
     };
 
     this.toggleModal = this.toggleModal.bind(this);
   }
+
+  handleChange = event => {
+    event.preventDefault();
+    const { name, value } = event.target;
+    let errors = this.state.errors;
+
+    switch (name) {
+      case 'name':
+        errors.name = value.length < 5 ? 'Name must be 5 characters long' : '';
+        break;
+      case 'email':
+        errors.email = validEmailRegex.test(value) ? '' : 'Email is not valid';
+        break;
+      case 'destination':
+        errors.destination =
+          value.length < 3 ? 'Must enter valid destination' : '';
+        break;
+      default:
+        break;
+    }
+
+    this.setState({ errors, [name]: value });
+  };
+
+  handelSubmit = event => {
+    event.preventDefault();
+    this.setState({ formValid: validateForm(this.state.errors) });
+  };
 
   toggleModal() {
     this.setState({
@@ -29,6 +72,7 @@ class Footer extends Component {
   }
 
   render() {
+    const { errors } = this.state;
     return (
 
       <footer className="site-footer">
@@ -47,34 +91,49 @@ class Footer extends Component {
                   dreams!
                 </ModalHeader>
                 <ModalBody>
-                  <Form>
-                    <FormGroup onSubmit={values => this.handleSubmit(values)}>
-                      <Label htmlFor="rating">Name</Label>
-                      <Input
-                        type="text"
-                        name="name"
-                        id="name"
-                        placeholder="Name"
-                      />
-                    </FormGroup>
-                    <FormGroup>
-                      <Label htmlFor="email">Email</Label>
-                      <Input
-                        type="text"
-                        name="email"
-                        id="email"
-                        placeholder="Email"
-                      />
-                    </FormGroup>
-                    <FormGroup>
-                      <Label htmlFor="email">Destination</Label>
-                      <Input
-                        type="text"
-                        name="trip"
-                        id="trip"
-                        placeholder="Destination"
-                      />
-                    </FormGroup>
+                    <Form onSubmit={this.handleChange} noValidate>
+                      <FormGroup>
+                        <Label htmlFor="rating">Name</Label>
+                        <Input
+                          type="text"
+                          name="name"
+                          id="name"
+                          placeholder="Name"
+                          onChange={this.handleChange}
+                          noValidate
+                        />
+                        {errors.name.length > 0 && (
+                          <span className="error">{errors.name}</span>
+                        )}
+                      </FormGroup>
+                      <FormGroup>
+                        <Label htmlFor="email">Email</Label>
+                        <Input
+                          type="text"
+                          name="email"
+                          id="email"
+                          placeholder="Email"
+                          onChange={this.handleChange}
+                          noValidate
+                        />
+                        {errors.email.length > 0 && (
+                          <span className="error">{errors.email}</span>
+                        )}
+                      </FormGroup>
+                      <FormGroup>
+                        <Label htmlFor="destination">Destination</Label>
+                        <Input
+                          type="text"
+                          name="trip"
+                          id="trip"
+                          placeholder="Where To?"
+                          onChange={this.handleChange}
+                          noValidate
+                        />
+                        {errors.destination.length > 0 && (
+                          <span className="error">{errors.destination}</span>
+                        )}
+                      </FormGroup>
                     <FormGroup>
                       <Label htmlFor="email">Date</Label>
                       <Input

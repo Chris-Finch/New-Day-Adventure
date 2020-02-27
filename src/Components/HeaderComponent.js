@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   Nav,
   Navbar,
@@ -14,8 +14,17 @@ import {
   FormGroup,
   Input,
   Label
-} from "reactstrap";
-import { NavLink } from "react-router-dom";
+} from 'reactstrap';
+import { NavLink } from 'react-router-dom';
+
+const validEmailRegex = RegExp(
+  /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+);
+const validateForm = errors => {
+  let valid = true;
+  Object.values(errors).forEach(val => val.length > 0 && (valid = false));
+  return valid;
+};
 
 class Header extends Component {
   constructor(props) {
@@ -23,12 +32,46 @@ class Header extends Component {
 
     this.state = {
       isNavOpen: false,
-      isModalOpen: false
+      isModalOpen: false,
+      formValid: false,
+      errors: {
+        name: '',
+        email: '',
+        destination: '',
+      }
     };
 
     this.toggleNav = this.toggleNav.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
   }
+
+  handleChange = event => {
+    event.preventDefault();
+    const { name, value } = event.target;
+    let errors = this.state.errors;
+
+    switch (name) {
+      case 'name':
+        errors.name = value.length < 5 ? 'Name must be 5 characters long' : '';
+        break;
+      case 'email':
+        errors.email = validEmailRegex.test(value) ? '' : 'Email is not valid';
+        break;
+      case 'destination':
+        errors.destination =
+          value.length < 3 ? 'Must enter valid destination' : '';
+        break;
+      default:
+        break;
+    }
+
+    this.setState({ errors, [name]: value });
+  };
+
+  handelSubmit = event => {
+    event.preventDefault();
+    this.setState({ formValid: validateForm(this.state.errors) });
+  };
 
   toggleModal() {
     this.setState({
@@ -43,45 +86,53 @@ class Header extends Component {
   }
 
   render() {
+    const { errors } = this.state;
     return (
       <React.Fragment>
-
         <Navbar dark sticky="top" expand="md">
           <div className="container">
             <NavbarBrand className="mr-auto" href="/">
-              <img  className="lo-go" src="/assets/img/logo.png" alt="website logo" />
+              <img
+                className="lo-go"
+                src="/assets/img/logo.png"
+                alt="website logo"
+              />
             </NavbarBrand>
             <NavbarToggler onClick={this.toggleNav} />
             <Collapse isOpen={this.state.isNavOpen} navbar>
-              <Nav navbar>
+              <Nav navbar className="nav-items">
                 <NavItem>
-                    <NavLink className="nav-link" to="/home">
-                       <i className="icon fa fa-lg" /> Home
-                    </NavLink>
+                  <NavLink className="nav-link" to="/home">
+                    <i className="icon fa fa-lg" /> Home
+                  </NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink className="nav-link" to="/iceland">
-                       <i className="icon fa fa-lg" /> Iceland
-                    </NavLink>
+                  <NavLink className="nav-link" to="/iceland">
+                    <i className="icon fa fa-lg" /> Iceland
+                  </NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink className="nav-link" to="/italy">
-                       <i className="icon fa fa-lg" /> Italy
-                    </NavLink>
+                  <NavLink className="nav-link" to="/italy">
+                    <i className="icon fa fa-lg" /> Italy
+                  </NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink className="nav-link" to="/peru">
-                       <i className="icon fa fa-lg" /> Peru
-                    </NavLink>
+                  <NavLink className="nav-link" to="/peru">
+                    <i className="icon fa fa-lg" /> Peru
+                  </NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink className="nav-link" to="/thailand">
-                       <i className="icon fa fa-lg" /> Thailand
-                    </NavLink>
+                  <NavLink className="nav-link" to="/thailand">
+                    <i className="icon fa fa-lg" /> Thailand
+                  </NavLink>
                 </NavItem>
               </Nav>
-              <Button className="trip-button ml-5" color="info" onClick={this.toggleModal}>
-                  Custom Trip
+              <Button
+                className="trip-button ml-5"
+                color="info"
+                onClick={this.toggleModal}
+              >
+                Custom Trip
               </Button>
             </Collapse>
           </div>
@@ -97,15 +148,20 @@ class Header extends Component {
               Let our experienced guides take you on the trip of your dreams!
             </ModalHeader>
             <ModalBody>
-              <Form>
-                <FormGroup onSubmit={values => this.handleSubmit(values)}>
+              <Form onSubmit={this.handleChange} noValidate>
+                <FormGroup>
                   <Label htmlFor="rating">Name</Label>
                   <Input
                     type="text"
                     name="name"
                     id="name"
                     placeholder="Name"
+                    onChange={this.handleChange}
+                    noValidate
                   />
+                  {errors.name.length > 0 && (
+                    <span className="error">{errors.name}</span>
+                  )}
                 </FormGroup>
                 <FormGroup>
                   <Label htmlFor="email">Email</Label>
@@ -114,24 +170,34 @@ class Header extends Component {
                     name="email"
                     id="email"
                     placeholder="Email"
+                    onChange={this.handleChange}
+                    noValidate
                   />
+                  {errors.email.length > 0 && (
+                    <span className="error">{errors.email}</span>
+                  )}
                 </FormGroup>
                 <FormGroup>
-                  <Label htmlFor="email">Destination</Label>
+                  <Label htmlFor="destination">Destination</Label>
                   <Input
                     type="text"
                     name="trip"
                     id="trip"
-                    placeholder="Destination"
+                    placeholder="Where To?"
+                    onChange={this.handleChange}
+                    noValidate
                   />
+                  {errors.destination.length > 0 && (
+                    <span className="error">{errors.destination}</span>
+                  )}
                 </FormGroup>
                 <FormGroup>
-                  <Label htmlFor="email">Date</Label>
+                  <Label htmlFor="date">Date</Label>
                   <Input
                     type="date"
                     name="date"
                     id="date"
-                    placeholder="Destination"
+                    placeholder="Date"
                   />
                 </FormGroup>
                 <FormGroup>
@@ -143,8 +209,13 @@ class Header extends Component {
                     <option>4</option>
                     <option>5</option>
                   </Input>
-                  <Button className="mt-2" type="submit" value="submit" color="primary">
-                    Reserve Trip
+                  <Button
+                    className="mt-3 inner-modal-button"
+                    type="submit"
+                    value="submit"
+                    color="primary"
+                  >
+                    Let's Go!
                   </Button>
                 </FormGroup>
               </Form>
