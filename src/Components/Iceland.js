@@ -2,8 +2,42 @@ import React from 'react';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 import { Jumbotron } from 'reactstrap';
+import { GoogleMap, withScriptjs, withGoogleMap } from 'react-google-maps';
 
 export function Iceland(props) {
+  function Map() {
+    return (
+      <GoogleMap
+        defaultZoom={6}
+        defaultCenter={{ lat: 64.963051, lng: -19.020836 }}
+      />
+    );
+  }
+
+  const WrappedMap = withScriptjs(withGoogleMap(Map));
+
+  function WrapMap() {
+    return (
+      <div
+        style={{
+          paddingBottom: '20px',
+          margin: '20px',
+          width: '500px',
+          height: '100px'
+        }}
+      >
+        <WrappedMap
+          googleMapURL={
+            'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyCelAVZt9P07raYnwndqeo-IVm6on3Y-eo'
+          }
+          loadingElement={<div style={{ height: `100%` }} />}
+          containerElement={<div style={{ height: `400px` }} />}
+          mapElement={<div style={{ height: `100%` }} />}
+        />
+      </div>
+    );
+  }
+
   return (
     <React.Fragment>
       <Jumbotron fluid>
@@ -48,8 +82,7 @@ export function Iceland(props) {
           awe-inspiring things I ever witnessed. The lights are best admired in
           the remote places away from city lights. The best time to catch them
           is from mid-September to mid-April. However, it’s a crapshoot! The
-          longer you stay the north, the better your chances! aerial view over
-          Reykjavik from the tower of Hallgrimskirkja church
+          longer you stay the north, the better your chances! 
         </p>
         <h5 className="activity-head">3. Skaftafell Ice Cave </h5>
         <p>
@@ -58,7 +91,7 @@ export function Iceland(props) {
           National Park attract adventurers from around the globe.
         </p>
         <h5 className="activity-head">
-          4. Day trip to the Jökulsárlón glacier lagoon{' '}
+          4. Day trip to the Jökulsárlón glacier lagoon
         </h5>
         <p>
           Located in the southeast of Iceland, this ice flow is one of the most
@@ -74,6 +107,9 @@ export function Iceland(props) {
           look like a different planet. Hiking and horseback riding are among
           the most popular activities here.
         </p>
+      </div>
+      <div style= {{ }}>
+        <WrapMap />
       </div>
     </React.Fragment>
   );
