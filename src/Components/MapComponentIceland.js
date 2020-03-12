@@ -23,8 +23,8 @@ export class MapContainer extends Component {
 }
 
 const style = {
-  width: '70%',
-  height: '50%'
+  width: '80vh',
+  height: '50vh'
 };
 
 export default GoogleApiWrapper({

@@ -1,7 +1,7 @@
 import React from 'react';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
-import { Jumbotron } from 'reactstrap';
+import { Jumbotron, Container } from 'reactstrap';
 import MapContainer from './MapComponentIceland';
 
 export function Iceland(props) {
@@ -76,9 +76,11 @@ export function Iceland(props) {
           the most popular activities here.
         </p>
       </div>
-      <div className="gMap">
-        <MapContainer />
-      </div>
+      <Container className="gMap">
+        <div>
+          <MapContainer />
+        </div>
+      </Container>
     </React.Fragment>
   );
 }
