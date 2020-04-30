@@ -2,6 +2,7 @@ import React from 'react';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 import { Jumbotron } from 'reactstrap';
+import SimpleMap from './MapComponentThailand';
 
 export function Thailand(props) {
   return (
@@ -74,6 +75,9 @@ export function Thailand(props) {
           doesn’t mean it’s not a lot of fun and it’s as much a part of Thailand
           as anything else.
         </p>
+      </div>
+      <div className="gMap">
+        <SimpleMap />
       </div>
     </React.Fragment>
   );

@@ -2,6 +2,7 @@ import React from 'react';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 import { Jumbotron } from 'reactstrap';
+import SimpleMap from './MapComponentItaly';
 
 export function Italy(props) {
   return (
@@ -71,6 +72,11 @@ export function Italy(props) {
           cool off.
         </p>
       </div>
+      {/* <Container> */}
+        <div className="gMap">
+          <SimpleMap />
+        </div>
+      {/* </Container> */}
     </React.Fragment>
   );
 }

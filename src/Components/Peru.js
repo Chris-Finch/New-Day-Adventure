@@ -2,6 +2,7 @@ import React from 'react';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 import { Jumbotron } from 'reactstrap';
+import SimpleMap from './MapComponentPeru';
 
 export function Peru(props) {
   return (
@@ -69,6 +70,9 @@ export function Peru(props) {
           habitable. A trip here isn’t complete unless you visit one of the
           small agricultural villages for a taste of daily life.
         </p>
+      </div>
+      <div className="gMap">
+        <SimpleMap />
       </div>
     </React.Fragment>
   );
