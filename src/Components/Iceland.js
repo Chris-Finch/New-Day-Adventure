@@ -2,10 +2,9 @@ import React from 'react';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 import { Jumbotron, Container } from 'reactstrap';
-import MapContainer from './MapComponentIceland';
+import SimpleMap from './MapComponentIceland';
 
 export function Iceland(props) {
-
   return (
     <React.Fragment>
       <Jumbotron fluid>
@@ -76,16 +75,13 @@ export function Iceland(props) {
           the most popular activities here.
         </p>
       </div>
-      <Container className="gMap">
-        <div>
-          <MapContainer />
+      <Container>
+        <div className="gMap">
+          <SimpleMap />
         </div>
       </Container>
     </React.Fragment>
   );
 }
 
-
-
 export default Iceland;
-
